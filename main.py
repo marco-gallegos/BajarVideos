@@ -18,6 +18,12 @@ if not args.directory:
     print("se necesita un directorio de trabajo argumento -d --directory")
     exit()
 
+ffmpeg = os.system("ffmpeg -version")
+
+if ffmpeg:
+    print("necesitas instalarn ffmpeg y añadirlo a tu path\nhttps://ffmpeg.org/  ")
+    exit()
+
 #variables iniciales
 file_name = str(f"{args.directory}\\out.txt")
 destination_dir = str(f"{args.directory}\\convertidos")

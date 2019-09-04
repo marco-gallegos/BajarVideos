@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import peewee
 import os
 import argparse
@@ -24,9 +25,9 @@ if ffmpeg:
     print("necesitas instalarn ffmpeg y añadirlo a tu path\nhttps://ffmpeg.org/  ")
     exit()
 
-#variables iniciales
+# variables iniciales
 file_name = str(f"{args.directory}/out.txt")
-destination_dir = str(f"{args.directory}/convertidos")
+# destination_dir = str(f"{args.directory}/convertidos")
 
 for extension in extensiones:
     comand_string = str(f"ls {args.directory}/*{extension} >> {file_name}")
@@ -36,12 +37,11 @@ file = open(file_name,"r")
 video_files = file.readlines()
 file.close()
 
-#os.system(str(f"del {file_name}"))
-os.system(str(f"mkdir {destination_dir}"))
+os.system(str(f"del {file_name}"))
 
 for video in video_files:
     video = video.replace("\n", "")
     destination_name = video[:-4]
-    os.system(str(f"ffmpeg -i \"{video}\" -c:v libx265 -crf 29 \"{destination_name}_h265.mp4\""))
+    os.system(str(f"ffmpeg -threads 4 -i \"{video}\" -c:v libx265 \"{destination_name}_h265.mp4\""))
 
 

@@ -6,12 +6,15 @@ import argparse
 extensiones = [
     ".mp4",
     ".mkv",
-    ".avi"
+    ".avi",
+    ".flv"
 ]
 
 parser = argparse.ArgumentParser()
 # parser.add_argument("-v", "--verbose", help="Mostrar información de depuración", action="store_true")
 parser.add_argument("-d", "--directory", help="Ruta absoluta del directorio de trabajo")
+parser.add_argument("-cv", "--codecvideo", help="codec a usar")
+
 args = parser.parse_args()
 
 
@@ -37,11 +40,16 @@ file = open(file_name,"r")
 video_files = file.readlines()
 file.close()
 
-os.system(str(f"del {file_name}"))
+os.system(str(f"rm {file_name}"))
+
+codec = "libx265"
+
+if args.codecvideo:
+    codec = args.codecvideo
 
 for video in video_files:
     video = video.replace("\n", "")
     destination_name = video[:-4]
-    os.system(str(f"ffmpeg -threads 4 -i \"{video}\" -c:v libx265 \"{destination_name}_h265.mp4\""))
+    os.system(str(f"ffmpeg -threads 4 -i \"{video}\" -c:v {codec} \"{destination_name}_h265.mp4\""))
 
 
